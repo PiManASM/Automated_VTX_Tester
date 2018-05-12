@@ -38,19 +38,17 @@ namespace UI {
   
   void menu() {
     
-    static int count = 0;
-    count = rand() % 25;
-    count = Test::getMHz(); 
+    uint16_t MHz = Test::getMHz(); 
+    float    dBm = Test::getdBm();
     display.clearDisplay();
   
     // text display tests
     display.setCursor(0,0);
     display.println("VTx Power:");
-    display.print(count); display.println(" dBm");
-    display.print(pow(10,(count/10.0))); display.println(" mW");
+    display.print(dBm); display.println(" dBm");
+    display.print(pow(10,(dBm/10.0))); display.println(" mW");
+    display.print("Freq: "); display.println(MHz);
     display.display();
-    delay(2000);
-    count++;
-
-}
+    //delay(2000);
+  }
 }

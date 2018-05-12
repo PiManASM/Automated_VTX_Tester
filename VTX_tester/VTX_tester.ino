@@ -9,6 +9,6 @@ void setup(){
 }
 
 void loop(){
-  //Test::Tramp();
+  Test::Tramp();
   UI::menu();
 }

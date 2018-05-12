@@ -3,22 +3,30 @@
 #include <Arduino.h>
 #include <stdint.h>
 
+#ifndef TestPower_H
+#define TestPower_H
+
 namespace Test {
   void setup();
-  uint16_t getMHz();
-  static uint16_t MHz = 5640;
+  uint16_t getMHz(); 
+  float getdBm(); 
+  
   //get average ADC reading over 10 iterations
-  float ReadAvgRF_1024(void);
+  float ReadAvgRF(void);
 
   //convert ADC reading to dBm
-  float V2dBm(float RF_1024);
+  void V2dBm(float RF_1024);
 
   //print to serial monitor
-  void dataWrite(float dBm);
+  void dataWrite(uint32_t MHz, float dBm);
 
   //get ADC reading and output dBm
   void MeasureTx();
 
   void Tramp();
+
+  class VTx_Data;
 }
+
+#endif
 

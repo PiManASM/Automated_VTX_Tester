@@ -40,6 +40,5 @@ static const unsigned char PROGMEM logo16_glcd_bmp[] =
 
 namespace UI {
   void setup();
-  //void menu(float dBm,Adafruit_SSD1306 &display1);
   void menu();
 }

@@ -17,8 +17,8 @@
  
 #include <stdint.h>
 
-#ifndef Morse_h
-#define Morse_h
+#ifndef VTX_common_H
+#define VTX_common_H
 
 #define VTX_STRING_BAND_COUNT 5
 #define VTX_STRING_CHAN_COUNT 8

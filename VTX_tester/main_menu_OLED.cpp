@@ -20,9 +20,10 @@ All text above, and the splash screen must be included in any redistribution
 #include <SPI.h>
 #include <Wire.h>
 #include <Adafruit_GFX.h>
-#include "Adafruit_SSD1306.h"
+#include <Adafruit_SSD1306.h>
 #include <math.h>       /* pow() */
 
+#include "TestPower.h"
 #include "main_menu_OLED.h"
 
 namespace UI {
@@ -30,20 +31,19 @@ namespace UI {
   
   void setup() {
     display.begin(SSD1306_SWITCHCAPVCC, 0x3C); 
+    display.setTextSize(2);
+    display.setTextColor(WHITE);
     display.clearDisplay();
   }
   
   void menu() {
-    //printf("display");
-    //display.begin(SSD1306_SWITCHCAPVCC, 0x3C);
+    
     static int count = 0;
     count = rand() % 25;
-     
+    count = Test::getMHz(); 
     display.clearDisplay();
   
     // text display tests
-    display.setTextSize(2);
-    display.setTextColor(WHITE);
     display.setCursor(0,0);
     display.println("VTx Power:");
     display.print(count); display.println(" dBm");

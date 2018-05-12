@@ -6,7 +6,7 @@
 #ifndef ArduinoTramp
 #define ArduinoTramp
 
-static uint8_t trampChecksum(uint8_t *trampBuf);
+//static uint8_t trampChecksum(uint8_t *trampBuf);
 
 //send Tramp data packet
 //void TrampWriteCMD(uint8_t cmd, uint16_t param)

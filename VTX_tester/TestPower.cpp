@@ -4,6 +4,7 @@
 #include <stdint.h>
 #include <SoftwareSerial.h>
 
+#include "main_menu_OLED.h"
 #include "VTX_common.h"
 #include "ArduinoTramp.h"
 
@@ -36,11 +37,16 @@ void dataWrite(uint32_t MHz, float dBm, HardwareSerial &Serial) {
   Serial.println(dBm);             // debug value
 }
 
+//void dataWriteOLED(float dBm) {
+//  menu(dBm, display);
+//}
+
 //get ADC reading and output dBm
 void MeasureTx(uint32_t MHz, HardwareSerial &Serial){
   float RF_1024 = ReadAvgRF_1024();
   float dBm = V2dBm(RF_1024);
   dataWrite(MHz, dBm, Serial);
+//  dataWriteOLED(dBm)
 }
 
 //test power output every 5MHz

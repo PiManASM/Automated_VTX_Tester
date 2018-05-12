@@ -9,7 +9,6 @@
 #define ArduinoTramp
 
 static uint8_t trampReqBuffer[16];
-
 static uint8_t trampChecksum(uint8_t *trampBuf)
 {
     uint8_t cksum = 0;

@@ -8,6 +8,7 @@
 #ifndef ArduinoTramp
 #define ArduinoTramp
 
+namespace Tramp{
 static uint8_t trampReqBuffer[16];
 static uint8_t trampChecksum(uint8_t *trampBuf)
 {
@@ -33,5 +34,5 @@ void TrampWrite (uint16_t Freq, SoftwareSerial &mySerial){
 
     mySerial.write(trampReqBuffer, 16);
 }
-
+}
 #endif

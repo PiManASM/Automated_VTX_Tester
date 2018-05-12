@@ -55,7 +55,7 @@ void TrampTest(HardwareSerial &Serial, SoftwareSerial &mySerial){
   
   for(int band = 0; band<VTX_STRING_BAND_COUNT; band++){
     for(int freq = 0; freq<VTX_STRING_CHAN_COUNT; freq++){  
-      TrampWrite(MHz, mySerial);
+      Tramp::TrampWrite(MHz, mySerial);
       MeasureTx(MHz, Serial);
       //MHz += 1;
       MHz = vtx58frequencyTable[band][freq]; //get valid MHz from table

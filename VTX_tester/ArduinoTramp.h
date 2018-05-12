@@ -10,6 +10,7 @@
 
 //send Tramp data packet
 //void TrampWriteCMD(uint8_t cmd, uint16_t param)
+namespace Tramp {
 void TrampWrite (uint16_t Freq, SoftwareSerial &mySerial);
-
+}
 #endif

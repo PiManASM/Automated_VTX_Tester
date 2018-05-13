@@ -2,6 +2,7 @@
 
 #include <Arduino.h>
 #include <stdint.h>
+#include <math.h> /*log10() */
 #include <Wire.h>
 #include <Adafruit_ADS1015.h>
 
@@ -13,28 +14,31 @@
 #define ADC_Pin 0
 #define CmdDelay 3000 //minimum mS to wait between commands 
 
-//get average ADC reading over 10 iterations
-
 namespace Test {
   
   Adafruit_ADS1115 adc(0x48);
+  static float Power_on_channel[2][8];
   static uint16_t MHz = 5000;
   static float dBm = 0;
+  //static float SWR = 0;
 
   void setup () {
     Serial.begin(9600);    
-    Serial.print(" MHz  ");
+    Serial.print("MHz  ");
     Serial.println(" dBm  ");
     adc.begin();
   }
 
   uint16_t getMHz() {
-    //uint16_t temp = rand() % 25;
     return MHz;
   }
 
   float getdBm() {
     return dBm;
+  }
+
+  float getSWR() {
+   // return SWR;
   }
   
   //16 bit ADC
@@ -50,9 +54,7 @@ namespace Test {
 
   //convert ADC voltage reading to dBm
   void V2dBm(float Voltage) {
-    dBm = -34.924 * Voltage + 26.159;
-  //  Serial.print(dBm);
-  //  return dBm;
+    dBm = -34.924 * Voltage + 26.159 +20;
   }
 
   //get ADC reading and output dBm
@@ -69,16 +71,44 @@ namespace Test {
     Serial.println(dBm);             // debug value
   }
 
+  float calcSWR(float delta_power) {
+    //Serial.print("dp"); Serial.println(delta_power);
+    float R = pow(10.0, delta_power /-20.0);
+    // Serial.print("R"); Serial.println(R);
+    float SWR = (1 + R)/(1 - R);
+    return SWR;
+  }
+
+  void sweepChannels(int band_max,int freq_max,bool delta) {
+    for(int band = 0; band<band_max /*VTX_STRING_BAND_COUNT*/; band++){
+      for(int freq = 0; freq<freq_max /*VTX_STRING_CHAN_COUNT*/; freq++){  
+        MHz = vtx58frequencyTable[band][freq]; //get valid MHz from table
+        Tramp::Write(MHz);
+        delay(2000); //wait for power to settle
+        MeasureTx(MHz);
+        if(!delta)
+          Power_on_channel[band][freq] = dBm;
+        else {
+          //Serial.println(Power_on_channel[band][freq]);
+          Power_on_channel[band][freq] -= dBm;
+          //Serial.println(Power_on_channel[band][freq]);
+          Power_on_channel[band][freq] = calcSWR(Power_on_channel[band][freq]);
+          Serial.println(Power_on_channel[band][freq]);
+        }
+        UI::menu();
+      }
+    } 
+  }
+  
+  void sweepSWR() {
+    Serial.println("Sweeping channels");
+    sweepChannels(2, 8, 0);
+    Serial.println("connect DUT");
+    delay(20000);
+    sweepChannels(2, 8, 1);
+  }
   //test power output for every frequency in betaflight 
   void Tramp(){
-  //for(int band = 0; band<VTX_STRING_BAND_COUNT; band++){
-  //  for(int freq = 0; freq<VTX_STRING_CHAN_COUNT; freq++){  
-        Tramp::Write(MHz);
-        delay(1000); //wait for power to settle
-        MeasureTx(MHz);
-       // MHz = vtx58frequencyTable[band][freq]; //get valid MHz from table
-        MHz = rand()%1000 + 5000;
-  //  }
-  //}  
+    sweepChannels(4, 8, 0); 
   }
 }

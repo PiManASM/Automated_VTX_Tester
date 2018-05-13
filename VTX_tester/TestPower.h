@@ -23,6 +23,11 @@ namespace Test {
   //get ADC reading and output dBm
   void MeasureTx();
 
+  float calcSWR(float delta_power);
+  void sweepSWR();
+
+  void sweepChannels(int band_max,int freq_max,bool delta);
+
   void Tramp();
 
   class VTx_Data;

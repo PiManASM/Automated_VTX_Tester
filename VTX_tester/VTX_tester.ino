@@ -2,13 +2,14 @@
 #include "TestPower.h"
 #include "main_menu_OLED.h"
 
-void setup(){
+void setup() {
   Tramp::setup();
   Test::setup();
   UI::setup();
 }
 
-void loop(){
-  Test::Tramp();
-  UI::menu();
+void loop() {
+  //Test::Tramp();
+  Test::sweepSWR();
+  //UI::menu();
 }

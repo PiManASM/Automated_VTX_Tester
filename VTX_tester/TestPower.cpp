@@ -17,7 +17,7 @@
 namespace Test {
   
   Adafruit_ADS1115 adc(0x48);
-  static float Power_on_channel[2][8];
+  //static float Power_on_channel[2][8];
   static uint16_t MHz = 5000;
   static float dBm = 0;
   //static float SWR = 0;
@@ -54,7 +54,7 @@ namespace Test {
 
   //convert ADC voltage reading to dBm
   void V2dBm(float Voltage) {
-    dBm = -34.924 * Voltage + 26.159 +20;
+    dBm = -34.924 * Voltage + 26.159 +17;
   }
 
   //get ADC reading and output dBm
@@ -66,36 +66,40 @@ namespace Test {
 
   //print to serial monitor
   void dataWrite(uint32_t MHz, float dBm) {
-    Serial.print(MHz);
+    //Serial.print(MHz);
+    static uint16_t count = 0;
+    Serial.print(count);  
+    count++;
     Serial.print(',');
-    Serial.println(dBm);             // debug value
+    Serial.println(dBm);   
   }
 
   float calcSWR(float delta_power) {
-    //Serial.print("dp"); Serial.println(delta_power);
     float R = pow(10.0, delta_power /-20.0);
-    // Serial.print("R"); Serial.println(R);
     float SWR = (1 + R)/(1 - R);
     return SWR;
   }
 
-  void sweepChannels(int band_max,int freq_max,bool delta) {
+  void sweepChannels(int band_max,int freq_max, bool delta) {
     for(int band = 0; band<band_max /*VTX_STRING_BAND_COUNT*/; band++){
       for(int freq = 0; freq<freq_max /*VTX_STRING_CHAN_COUNT*/; freq++){  
+        //Serial.print("Hello, it's me");
         MHz = vtx58frequencyTable[band][freq]; //get valid MHz from table
-        Tramp::Write(MHz);
+        //Tramp::Write(MHz);
         delay(2000); //wait for power to settle
         MeasureTx(MHz);
-        if(!delta)
-          Power_on_channel[band][freq] = dBm;
-        else {
+        
+        /*
+        //if(!delta)
+          //Power_on_channel[band][freq] = dBm;
+        //else {
           //Serial.println(Power_on_channel[band][freq]);
-          Power_on_channel[band][freq] -= dBm;
+          //Power_on_channel[band][freq] -= dBm;
           //Serial.println(Power_on_channel[band][freq]);
-          Power_on_channel[band][freq] = calcSWR(Power_on_channel[band][freq]);
-          Serial.println(Power_on_channel[band][freq]);
-        }
-        UI::menu();
+          //Power_on_channel[band][freq] = calcSWR(Power_on_channel[band][freq]);
+        //}
+        //UI::menu();
+        */
       }
     } 
   }
@@ -109,6 +113,6 @@ namespace Test {
   }
   //test power output for every frequency in betaflight 
   void Tramp(){
-    sweepChannels(4, 8, 0); 
+    sweepChannels(1, 1, 0); 
   }
 }

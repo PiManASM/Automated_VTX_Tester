@@ -5,11 +5,11 @@
 void setup() {
   Tramp::setup();
   Test::setup();
-  UI::setup();
+  //UI::setup();
 }
 
 void loop() {
-  //Test::Tramp();
-  Test::sweepSWR();
+  Test::Tramp();
+  //Test::sweepSWR();
   //UI::menu();
 }
